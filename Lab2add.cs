@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -81,75 +81,86 @@ namespace ConsoleApp74
     }
     public class TVector2D
     {
-        private double a_;
-        private double b_;
-        public double a
+        private double x_;
+        private double y_;
+
+        public double x
         {
-            get { return a_; }
+            get { return x_; }
             set
             {
-                a_ = value;
+                x_ = value;
             }
         }
-        public double b
+        public double y
         {
-            get { return b_; }
+            get { return y_; }
             set
             {
-                b_ = value;
+                y_ = value;
             }
         }
+     
         public TVector2D() { }
-        public TVector2D(double a, double b)
+        public TVector2D(double x, double y, double x2, double y2)
         {
-            this.a = a;
-            this.b = b;
+            this.x = x2 - x;
+            this.y = y2 - y;
+
+        }
+        public TVector2D(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
         }
         public TVector2D(TVector2D vec)
         {
-            this.a = vec.a;
-            this.b = vec.b;
+            this.x = vec.x;
+            this.y = vec.y;
         }
         override public string ToString()
         {
-            return "a: " + a + " " + "b: " + b;
+            return "[x: " + (this.x) + " " + "y: " + (this.y) + "]";
         }
         public virtual void EnterVec()
         {
             Console.WriteLine("Enter a");
-            int a = int.Parse(Console.ReadLine());
+            double x = double.Parse(Console.ReadLine());
             Console.WriteLine("Enter b");
-            int b = int.Parse(Console.ReadLine());
-            this.a = a;
-            this.b = b;
+            double y = double.Parse(Console.ReadLine());
+            this.x = x;
+            this.y = y;
         }
-        public virtual void EnterVec(double a, double b)
+        public virtual void EnterVec(double x, double y, double x2, double y2)
         {
-
-            this.a = a;
-            this.b = b;
+            this.x = x2 - x;
+            this.y = y2 - y;
+        }
+        public virtual void EnterVec(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
         }
         public virtual void ShowVec()
         {
-
-            Console.WriteLine("a: " + a + "  " + "b: " + b);
+            Console.WriteLine("[x: " + this.x + " " + "y: " + this.y + "]");
         }
         public virtual double VecLength()
         {
-            return Math.Abs(Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2)));
+            return Math.Abs(Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)));
         }
         public virtual void VecNormal()
         {
 
-            double n = a / this.VecLength();
-            double m = b / this.VecLength();
+            double n = x / this.VecLength();
+            double m = y / this.VecLength();
             Console.WriteLine("Normalized Vec: (" + n + ";" + m + ")");
 
         }
         public virtual void VecEquals(TVector2D vec)
         {
             string equals = "";
-            if (a == vec.a && b == vec.b)
+            if (x == vec.x && y == vec.y)
             {
                 equals = "Vec1 equals Vec2";
             }
@@ -164,24 +175,24 @@ namespace ConsoleApp74
 
         public static TVector2D operator +(TVector2D a, TVector2D b)
         {
-            double n = a.a + b.a;
-            double m = a.b + b.b;
+            double n = a.x + b.x;
+            double m = a.y + b.y;
             TVector2D vec = new TVector2D(n, m);
             return vec;
 
         }
         public static TVector2D operator -(TVector2D a, TVector2D b)
         {
-            double n = a.a - b.a;
-            double m = a.b - b.b;
+            double n = a.x - b.x;
+            double m = a.y - b.y;
             TVector2D vec = new TVector2D(n, m);
             return vec;
 
         }
         public static double operator *(TVector2D a, TVector2D b)
         {
-            double n = a.a * b.a;
-            double m = a.b * b.b;
+            double n = a.x * b.x;
+            double m = a.y * b.y;
 
             return n + m;
 
@@ -191,17 +202,23 @@ namespace ConsoleApp74
     public class TVector2DF : TVector2D
     {
         public TVector2DF() { }
-        public TVector2DF(double a, double b)
+        public TVector2DF(double x, double y, double x2, double y2)
         {
-            this.a = a;
-            this.b = b;
+            this.x = x2 - x;
+            this.y = y2 - y;
+
         }
-        public TVector2DF(TVector2DF vec)
+        public TVector2DF(double x, double y)
         {
-            this.a = vec.a;
-            this.b = vec.b;
+            this.x = x;
+            this.y = y;
         }
-       
+        public TVector2DF(TVector2D vec)
+        {
+            this.x = vec.x;
+            this.y = vec.y;
+        }
+
         override public bool Equals(object obj)
         {
             bool e = false;
@@ -209,8 +226,8 @@ namespace ConsoleApp74
             if (obj is TVector3D)
             {
                 e = obj is TVector3D d &&
-                    a == d.a &&
-                    b == d.b;
+                    x == d.x &&
+                    y == d.y;
             }
            else if (obj != null )
             {
@@ -232,76 +249,77 @@ namespace ConsoleApp74
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(a, b);
+            return HashCode.Combine(x, y);
         }
     }
     public class TVector3D : TVector2DF
     {
-        private double c_;
-        public double c
+        private double z_;
+        public double z
         {
-            get { return c_; }
+            get { return z_; }
             set
             {
-                c_ = value;
+                z_ = value;
             }
         }
         public TVector3D() { }
-        public TVector3D(double a, double b, double c) : base(a, b)
+        public TVector3D(double x, double y, double z) : base(x, y)
         {
-            this.c = c;
+            this.z = z;
         }
         public TVector3D(TVector3D vec)
         {
-            this.a = vec.a;
-            this.b = vec.b;
-            this.c = vec.c;
+            this.x = vec.x;
+            this.y = vec.y;
+            this.z = vec.z;
         }
-        override public string ToString()
+        public TVector3D(double x, double y, double x2, double y2, double z, double z2)
         {
-            return "a: " + a + " b: " + b + " c: " + c;
+            this.x = x2 - x;
+            this.y = y2 - y;
+            this.z = z2 - z;
+
         }
         override public void EnterVec()
         {
             Console.WriteLine("Enter a");
-            int a = int.Parse(Console.ReadLine());
+            double x = double.Parse(Console.ReadLine());
             Console.WriteLine("Enter b");
-            int b = int.Parse(Console.ReadLine());
+            double y = double.Parse(Console.ReadLine());
             Console.WriteLine("Enter c");
-            int c = int.Parse(Console.ReadLine());
-            this.a = a;
-            this.b = b;
-            this.c = c;
+            double z = double.Parse(Console.ReadLine());
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
-        public void EnterVec(double a, double b, double c)
+        public void EnterVec(double x, double y, double z)
         {
-
-            this.a = a;
-            this.b = b;
-            this.c = c;
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
         override public void ShowVec()
         {
 
-            Console.WriteLine("a: " + a + " b: " + b + " c: " + c);
+            Console.WriteLine("[x: " + (x) + " y: " + (y) + " y: " + (z) + "]");
         }
+
         override public double VecLength()
         {
-            return Math.Abs(Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2) + Math.Pow(c, 2)));
+            return Math.Abs(Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2) + Math.Pow(z, 2)));
         }
-        override public void VecNormal()
+        public new void VecNormal()
         {
-
-            double n = a / this.VecLength();
-            double m = b / this.VecLength();
-            double z = c / this.VecLength();
-            Console.WriteLine("Normalized Vec: (" + n + ";" + m + ";" + z + ")");
-
+            double n = x / this.VecLength();
+            double m = y / this.VecLength();
+            double k = z / this.VecLength();
+            Console.WriteLine("Normalized Vec: (" + n + ";" + m + ";" + k + ")");
         }
         public void VecEquals(TVector3D vec)
         {
 
-            if (a == vec.a && b == vec.b && c == vec.c)
+            if (x == vec.x && y == vec.y && z == vec.z)
             {
                 Console.WriteLine("Vec1 equals Vec2");
             }
@@ -313,29 +331,29 @@ namespace ConsoleApp74
         }
         public static TVector3D operator +(TVector3D a, TVector3D b)
         {
-            double n = a.a + b.a;
-            double m = a.b + b.b;
-            double z = a.c + b.c;
-            TVector3D vec = new TVector3D(n, m, z);
+            double n = a.x + b.x;
+            double m = a.y + b.y;
+            double k = a.z + b.z;
+            TVector3D vec = new TVector3D(n, m, k);
             return vec;
 
         }
         public static TVector3D operator -(TVector3D a, TVector3D b)
         {
-            double n = a.a - b.a;
-            double m = a.b - b.b;
-            double z = a.c - b.c;
-            TVector3D vec = new TVector3D(n, m, z);
+            double n = a.x - b.x;
+            double m = a.y - b.y;
+            double k = a.z - b.z;
+            TVector3D vec = new TVector3D(n, m, k);
             return vec;
 
         }
         public static double operator *(TVector3D a, TVector3D b)
         {
-            double n = a.a * b.a;
-            double m = a.b * b.b;
-            double z = a.c * b.c;
+            double n = a.x * b.x;
+            double m = a.y * b.y;
+            double k = a.z * b.z;
 
-            return n + m + z;
+            return n + m + k;
 
         }
 
@@ -343,17 +361,22 @@ namespace ConsoleApp74
     public class TVector3DF : TVector3D
     {
         public TVector3DF() { }
-        public TVector3DF(double a, double b, double c) 
+        public TVector3DF(double x, double y, double z)
         {
-            this.a = a;
-            this.b = b;
-            this.c = c;
+            this.z = z;
         }
         public TVector3DF(TVector3D vec)
         {
-            this.a = vec.a;
-            this.b = vec.b;
-            this.c = vec.c;
+            this.x = vec.x;
+            this.y = vec.y;
+            this.z = vec.z;
+        }
+        public TVector3DF(double x, double y, double x2, double y2, double z, double z2)
+        {
+            this.x = x2 - x;
+            this.y = y2 - y;
+            this.z = z2 - z;
+
         }
         override public bool Equals(object obj)
         {
@@ -380,8 +403,9 @@ namespace ConsoleApp74
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(a, b, c);
+            return HashCode.Combine(x, y, z);
         }
     }
 }
+
 
